@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="SmartOrder" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>smartorder.entities.Product</class>
+		<class>smartorder.entities.Customer</class>
+		<class>smartorder.entities.FoodOrder</class>
+		<class>smartorder.entities.OrderDetail</class>
+		<class>smartorder.entities.OrderDetailPK</class>
+		<properties>
+			<property name="eclipselink.ddl-generation" value="none" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/smartorder" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="vietdung" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
