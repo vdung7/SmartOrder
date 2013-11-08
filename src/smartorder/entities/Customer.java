@@ -2,6 +2,7 @@ package smartorder.entities;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -32,6 +33,11 @@ public class Customer implements Serializable {
 	public Customer() {
 	}   
 	
+	public Customer(String customerID) {
+		super();
+		this.customerID = customerID;
+	}
+
 	public Customer(String customerID, String customerName, String password,
 			String customerAddress, String customerFone, String customerEmail) {
 		this.customerID = customerID;
@@ -118,6 +124,20 @@ public class Customer implements Serializable {
 			return false;
 		return true;
 	}
-   
+
 	
+	@Override
+	public String toString() {
+		return "Customer [customerID=" + customerID + ", password=" + password
+				+ "]";
+	}
+
+	public ArrayList<String> toArray(){
+		ArrayList<String> res = new ArrayList<>();
+		res.add(this.getCustomerName());
+		res.add(this.getCustomerAddress());
+		res.add(this.getCustomerFone());
+		res.add(this.getCustomerEmail());
+		return res;
+	}
 }

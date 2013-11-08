@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import smartorder.entities.Customer;
@@ -14,21 +12,22 @@ import smartorder.entities.FoodOrder;
 import smartorder.entities.OrderDetail;
 import smartorder.entities.OrderDetailPK;
 import smartorder.entities.Product;
-import smartorder.presentation.CartItem;
+import smartorder.common.CartItem;
 
 public class OrderHelper {
 	
 	
-	public static void makeOrder(EntityManager em, ArrayList<CartItem> shoppingCart) throws Exception {
+	public static void makeOrder(EntityManager em, ArrayList<CartItem> shoppingCart, String userID) throws Exception {
 		// Customer make a Order:	
 		// 1. user(customer) log in
-		Customer user = em.find(Customer.class, "vietdung7");
+		Customer user = em.find(Customer.class, userID);
 		
 		// 2. prepare a blank FoodOrder
 		java.util.Date today = new Date();
 		java.sql.Date date = new java.sql.Date(today.getTime());
 		String orderID = "ORD-"+date+"-"+date.getTime();
 		FoodOrder order = new FoodOrder(orderID, user.getCustomerID(), date);
+		order.setCustomer(user);
 		
 		// 3. create OrderDetail for each Product
 		List<OrderDetail> details = new ArrayList<OrderDetail>();
@@ -51,14 +50,30 @@ public class OrderHelper {
 		
 	}
 
+	public static ArrayList<String> getOrdersInString (EntityManager em, String userID) {
+		ArrayList<String> orders = new ArrayList<String>();
+		
+		Query query = em.createNamedQuery("FoodOrder.findByCustomer");
+		query.setParameter(1, userID);
+		@SuppressWarnings("unchecked")
+		List<String> l = (List<String>) query.getResultList();
+		for (int i=0; i<l.size(); i++) {
+			orders.add(l.get(i));
+		}
+		return orders;
+
+	}
+	
 	public static void printAllOrder(EntityManager em) {
 		Query query = em.createNamedQuery("FoodOrder.findAll");
+		@SuppressWarnings("unchecked")
 		List<FoodOrder> orders = (List<FoodOrder>) query.getResultList();
 		
 		for (FoodOrder order : orders) {
 			System.out.println("-----------------------------------------------------");
 			System.out.println("Order - " + order.getOrderID());
 			System.out.println("Date : " + order.getOrderDate());
+			System.out.println("Customer : "+order.getCustomer().getCustomerName());
 			for (OrderDetail detail : order.getDetails()) {
 				System.out.printf("\t%-20s %2.2fx%d\n", 
 						detail.getProduct().getProductName(),detail.getPrice(),detail.getQuantity());
@@ -68,27 +83,66 @@ public class OrderHelper {
 		
 	}
 	
-	public static void initSampleData(EntityManager em) throws Exception{
-		// initialize sample products (foods)
-		em.persist(new Product("Hotdog", 1.5d));
-		em.persist(new Product("Cookies & Cream", 2.5d));
-		em.persist(new Product("Hot Chocolate", 1.0d));
-		em.persist(new Product("Cheese Pizza", 5.5d));
-		em.persist(new Product("Tuna Salad", 1.5d));
-		em.persist(new Product("Cheeseburger", 1.29d));
-		em.persist(new Product("Filet-O-Fish", 3.49d));
-		em.persist(new Product("Hamburger", 0.99d));
-		em.persist(new Product("French Fries Sm", 1.39d));
-		em.persist(new Product("French Fries Med", 1.99d));
-		em.persist(new Product("French Fries Lg", 2.29d));
-
-		// initialize sample customers account
-		em.persist(new Customer("vietdung7", "Viet Dung", "123456789", "Q.HM TPHCM", "0987356443", "vd@mail.com"));
-		em.persist(new Customer("vanthi114", "Van Thi", "123456789", "Q.GV TPHCM", "0986676443", "thinv@mail.com"));
-		em.persist(new Customer("jackvt93", "Luan Vu", "123456789", "Q.1 TPHCM", "0987354321", "jackvt@mail.com"));
-
-		System.out.println("Success initialize sample database");
-
+	public static String getDetail(EntityManager em, String orderID) { 
+		FoodOrder order = em.find(FoodOrder.class, orderID);
+		String detail = "";
+		
+		if(order!=null){
+			detail+="----------------------\n";
+			detail+="Order - " + order.getOrderID()+"\n";
+			detail+="Date : " + order.getOrderDate()+"\n";
+			detail+="Customer : "+order.getCustomer().getCustomerName()+"\n";
+			double total = 0d;
+			for (OrderDetail d : order.getDetails()) {
+				String fs = String.format( "\t%-20s %2.2fx%d\n", 
+						d.getProduct().getProductName(),d.getPrice(),d.getQuantity() );
+				detail+=fs;
+				total+= d.getPrice()*d.getQuantity();
+			}
+			
+			detail+="Total: "+total+"\n";
+			detail+="----------------------\n";
+		}
+		return detail;
 	}
-
+	
+	public static String getDetailInHTML(EntityManager em, String orderID) { 
+		FoodOrder order = em.find(FoodOrder.class, orderID);
+		String detail = "";
+		
+		if(order!=null){
+			detail+= "<html><b>";
+			detail+= "<font color=red>Order - " + order.getOrderID()+"</font><br>";
+			detail+= "Date : <font color=blue>" + order.getOrderDate()+"</font><br>";
+			detail+= "Customer : <font color=blue>"+order.getCustomer().getCustomerName()+"</font><br><hr>";
+			detail+= "<table border='0'>";
+			double total = 0d;
+			for (OrderDetail d : order.getDetails()) {
+				double price = d.getPrice()*d.getQuantity();
+				total+= price;
+				detail+= "<tr>";
+					detail+= "<td>"+d.getProduct().getProductName()+"</td>";
+					detail+= "<td>"+String.format("%2.2f", d.getPrice())+"x"+d.getQuantity()+" = </td>";
+					detail+= "<td>$"+String.format("%2.2f", price)+"</td>";
+				detail+= "</tr>";
+			}
+			detail+= "<tr>";
+			detail+= "<td></td>";
+			detail+= "<td><font color=red>Total = </font></td>";
+			detail+= "<td><font color=red>"+String.format("$%2.2f", total)+"</font></td>";
+			detail+= "</tr>";
+			detail+= "</table>";
+			detail+= "</b></html>";
+		}
+		return detail;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<FoodOrder> getByDate(EntityManager em, java.sql.Date before, java.sql.Date after) {
+		Query query = em.createNamedQuery("FoodOrder.findByDate");
+		query.setParameter(1, before);
+		query.setParameter(2, after);
+		return (List<FoodOrder>) query.getResultList();
+	}
+	
 }

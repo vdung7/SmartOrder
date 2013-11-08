@@ -1,6 +1,10 @@
-package smartorder.presentation;
+package smartorder.common;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private int productID;
 	private int quantity;
 	public CartItem(int productID, int quantity) {

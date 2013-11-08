@@ -13,7 +13,9 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="FoodOrder.findAll", query="select o from FoodOrder o")
+	@NamedQuery(name="FoodOrder.findAll", query="select o from FoodOrder o"),
+	@NamedQuery(name="FoodOrder.findByDate", query="select o from FoodOrder o where o.orderDate>=?1 and o.orderDate<=?2"),
+	@NamedQuery(name="FoodOrder.findByCustomer", query="select o.orderID from FoodOrder o where o.customerID=?1")
 })
 public class FoodOrder implements Serializable {
 

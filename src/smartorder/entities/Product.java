@@ -12,7 +12,8 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Product.findAll", query="select p from Product p")
+	@NamedQuery(name="Product.findAll", query="select p from Product p"),
+	@NamedQuery(name="Product.findAllAvailable", query="select p from Product p where p.isAvailable=?1")
 })
 public class Product implements Serializable {
 
@@ -22,6 +23,7 @@ public class Product implements Serializable {
 	private int productID;
 	private String productName;
 	private double refPrice;
+	private boolean isAvailable;
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(cascade=CascadeType.ALL ,mappedBy="product", fetch=FetchType.EAGER)
@@ -33,6 +35,22 @@ public class Product implements Serializable {
 	public Product(String productName, double refPrice) {
 		this.productName = productName;
 		this.refPrice = refPrice;
+		this.isAvailable = false;
+	}
+	
+	public Product(String productName, double refPrice, boolean isAvailable) {
+		super();
+		this.productName = productName;
+		this.refPrice = refPrice;
+		this.isAvailable = isAvailable;
+	}
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
 	}
 
 	public int getProductID() {
@@ -89,9 +107,7 @@ public class Product implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Product [productID=" + productID + ", productName="
-				+ productName + ", refPrice=" + refPrice + ", details="
-				+ details + "]";
+		return getProductID() +";"+ getProductName() +";"+ getRefPrice();
 	}
 	
 }
