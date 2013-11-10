@@ -9,15 +9,12 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: Customer
- *
+ * 
  */
 @Entity
-@NamedQueries({
-	@NamedQuery(name="Customer.findAll", query="select c from Customer c")
-})
+@NamedQueries({ @NamedQuery(name = "Customer.findAll", query = "select c from Customer c") })
 public class Customer implements Serializable {
 
-	   
 	@Id
 	private String customerID;
 	private String customerName;
@@ -27,12 +24,12 @@ public class Customer implements Serializable {
 	private String customerEmail;
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(cascade=CascadeType.ALL ,mappedBy="customer", fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
 	private List<FoodOrder> orders;
-	
+
 	public Customer() {
-	}   
-	
+	}
+
 	public Customer(String customerID) {
 		super();
 		this.customerID = customerID;
@@ -54,35 +51,40 @@ public class Customer implements Serializable {
 
 	public void setCustomerID(String customerID) {
 		this.customerID = customerID;
-	}   
+	}
+
 	public String getCustomerName() {
 		return this.customerName;
 	}
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
-	}   
+	}
+
 	public String getPassword() {
 		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}   
+	}
+
 	public String getCustomerAddress() {
 		return this.customerAddress;
 	}
 
 	public void setCustomerAddress(String customerAddress) {
 		this.customerAddress = customerAddress;
-	}   
+	}
+
 	public String getCustomerFone() {
 		return this.customerFone;
 	}
 
 	public void setCustomerFone(String customerFone) {
 		this.customerFone = customerFone;
-	}   
+	}
+
 	public String getCustomerEmail() {
 		return this.customerEmail;
 	}
@@ -90,15 +92,15 @@ public class Customer implements Serializable {
 	public void setCustomerEmail(String customerEmail) {
 		this.customerEmail = customerEmail;
 	}
-	
+
 	public List<FoodOrder> getOrders() {
 		return orders;
 	}
-	 
+
 	public void setOrders(List<FoodOrder> orders) {
 		this.orders = orders;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -107,7 +109,7 @@ public class Customer implements Serializable {
 				+ ((customerID == null) ? 0 : customerID.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -126,13 +128,17 @@ public class Customer implements Serializable {
 	}
 
 	
+	
 	@Override
 	public String toString() {
-		return "Customer [customerID=" + customerID + ", password=" + password
-				+ "]";
+		return "Customer [customerID=" + customerID + ", customerName="
+				+ customerName + ", password=" + password
+				+ ", customerAddress=" + customerAddress + ", customerFone="
+				+ customerFone + ", customerEmail=" + customerEmail
+				+ ", orders=" + orders + "]";
 	}
 
-	public ArrayList<String> toArray(){
+	public ArrayList<String> toArray() {
 		ArrayList<String> res = new ArrayList<>();
 		res.add(this.getCustomerName());
 		res.add(this.getCustomerAddress());

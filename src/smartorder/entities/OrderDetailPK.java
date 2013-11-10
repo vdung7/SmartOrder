@@ -7,17 +7,17 @@ import javax.persistence.Embeddable;
 
 /**
  * ID class for entity: OrderDetail
- *
- */ 
+ * 
+ */
 @Embeddable
-public class OrderDetailPK  implements Serializable {   
-   
-	         
-	private String orderID;         
+public class OrderDetailPK implements Serializable {
+
+	private String orderID;
 	private int productID;
 	private static final long serialVersionUID = 1L;
 
-	public OrderDetailPK() {}
+	public OrderDetailPK() {
+	}
 
 	public OrderDetailPK(String orderID, int productID) {
 		this.orderID = orderID;
@@ -31,7 +31,6 @@ public class OrderDetailPK  implements Serializable {
 	public void setOrderID(String orderID) {
 		this.orderID = orderID;
 	}
-	
 
 	public int getProductID() {
 		return this.productID;
@@ -40,11 +39,10 @@ public class OrderDetailPK  implements Serializable {
 	public void setProductID(int productID) {
 		this.productID = productID;
 	}
-	
-   
+
 	/*
 	 * @see java.lang.Object#equals(Object)
-	 */	
+	 */
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
@@ -54,20 +52,21 @@ public class OrderDetailPK  implements Serializable {
 		}
 		OrderDetailPK other = (OrderDetailPK) o;
 		return true
-			&& (getOrderID() == null ? other.getOrderID() == null : getOrderID().equals(other.getOrderID()))
-			&& getProductID() == other.getProductID();
+				&& (getOrderID() == null ? other.getOrderID() == null
+						: getOrderID().equals(other.getOrderID()))
+				&& getProductID() == other.getProductID();
 	}
-	
-	/*	 
+
+	/*
 	 * @see java.lang.Object#hashCode()
-	 */	
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (getOrderID() == null ? 0 : getOrderID().hashCode());
+		result = prime * result
+				+ (getOrderID() == null ? 0 : getOrderID().hashCode());
 		result = prime * result + getProductID();
 		return result;
 	}
-   
-   
+
 }

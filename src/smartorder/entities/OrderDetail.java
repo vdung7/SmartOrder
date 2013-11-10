@@ -7,22 +7,19 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: OrderDetail
- *
+ * 
  */
 @Entity
-@NamedQueries({
-	@NamedQuery(name="OrderDetail.findAll", query="select d from OrderDetail d")
-})
+@NamedQueries({ @NamedQuery(name = "OrderDetail.findAll", query = "select d from OrderDetail d") })
 public class OrderDetail implements Serializable {
 
-	   
-	@EmbeddedId 
+	@EmbeddedId
 	private OrderDetailPK orderDetailID;
 	private double price;
 	private int quantity;
 	private String note;
 	private static final long serialVersionUID = 1L;
-	
+
 	@ManyToOne
 	private Product product;
 	@ManyToOne
@@ -31,7 +28,7 @@ public class OrderDetail implements Serializable {
 	public OrderDetail() {
 		super();
 	}
-	
+
 	public OrderDetail(OrderDetailPK orderDetailID, double price, int quantity,
 			String note) {
 		super();
@@ -40,7 +37,7 @@ public class OrderDetail implements Serializable {
 		this.quantity = quantity;
 		this.note = note;
 	}
-	
+
 	public OrderDetail(OrderDetailPK orderDetailID, double price, int quantity) {
 		super();
 		this.orderDetailID = orderDetailID;
@@ -62,14 +59,16 @@ public class OrderDetail implements Serializable {
 
 	public void setPrice(double price) {
 		this.price = price;
-	}   
+	}
+
 	public int getQuantity() {
 		return this.quantity;
 	}
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-	}   
+	}
+
 	public String getNote() {
 		return this.note;
 	}
@@ -77,7 +76,7 @@ public class OrderDetail implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
+
 	public Product getProduct() {
 		return product;
 	}
@@ -119,6 +118,5 @@ public class OrderDetail implements Serializable {
 			return false;
 		return true;
 	}
-    
-	
+
 }

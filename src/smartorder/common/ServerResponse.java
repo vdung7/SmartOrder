@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 public class ServerResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private ArrayList<String> menu;	// item format : "id;name;price"
-	
+
+	private ArrayList<String> menu; // item format : "id;name;price"
+
 	// array format (in order) : fullname, address, phone, email
 	private ArrayList<String> userDetail;
-	
+
 	private boolean isRegistered, isOrdered;
 	private ArrayList<String> orderIDs;
 	private String detail;
-	
+
 	public ServerResponse() {
 		// nothing to do here ^_^
 	}
@@ -66,5 +66,5 @@ public class ServerResponse implements Serializable {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	
+
 }

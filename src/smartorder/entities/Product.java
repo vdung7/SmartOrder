@@ -8,36 +8,34 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: Product
- *
+ * 
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Product.findAll", query="select p from Product p"),
-	@NamedQuery(name="Product.findAllAvailable", query="select p from Product p where p.isAvailable=?1")
-})
+		@NamedQuery(name = "Product.findAll", query = "select p from Product p"),
+		@NamedQuery(name = "Product.findAllAvailable", query = "select p from Product p where p.isAvailable=?1") })
 public class Product implements Serializable {
 
-	   
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int productID;
 	private String productName;
 	private double refPrice;
 	private boolean isAvailable;
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(cascade=CascadeType.ALL ,mappedBy="product", fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
 	private List<OrderDetail> details;
-	
+
 	public Product() {
-	}   
-	
+	}
+
 	public Product(String productName, double refPrice) {
 		this.productName = productName;
 		this.refPrice = refPrice;
 		this.isAvailable = false;
 	}
-	
+
 	public Product(String productName, double refPrice, boolean isAvailable) {
 		super();
 		this.productName = productName;
@@ -59,14 +57,16 @@ public class Product implements Serializable {
 
 	public void setProductID(int productID) {
 		this.productID = productID;
-	}   
+	}
+
 	public String getProductName() {
 		return this.productName;
 	}
 
 	public void setProductName(String productName) {
 		this.productName = productName;
-	}   
+	}
+
 	public double getRefPrice() {
 		return this.refPrice;
 	}
@@ -74,13 +74,15 @@ public class Product implements Serializable {
 	public void setRefPrice(double refPrice) {
 		this.refPrice = refPrice;
 	}
-	
+
 	public List<OrderDetail> getDetails() {
 		return details;
 	}
+
 	public void setDetails(List<OrderDetail> details) {
 		this.details = details;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -89,6 +91,7 @@ public class Product implements Serializable {
 				+ ((productName == null) ? 0 : productName.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -105,9 +108,10 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return getProductID() +";"+ getProductName() +";"+ getRefPrice();
+		return getProductID() + ";" + getProductName() + ";" + getRefPrice();
 	}
-	
+
 }
