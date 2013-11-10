@@ -2,6 +2,7 @@ package smartorder.presentation;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 
@@ -74,7 +75,15 @@ public class ManagementFrame extends JFrame {
 		tabbedPane.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				salePanel.updateProductList();
+				Component com = tabbedPane.getSelectedComponent();
+				try {
+					if (com instanceof SaleStatisticPanel)
+						salePanel.updateProductList();
+					else if (com instanceof UserStatisticPanel)
+						userPanel.updateCustomerModel();
+				} catch (Exception ex) {
+					em.getTransaction().rollback();
+				}
 			}
 		});
 

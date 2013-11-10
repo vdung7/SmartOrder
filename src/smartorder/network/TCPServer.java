@@ -48,6 +48,7 @@ public class TCPServer extends Thread {
 
 			// create a server socket. A server socket waits for requests to
 			// come in over the network.
+			@SuppressWarnings("resource")
 			ServerSocket serverSocket = new ServerSocket(SERVERPORT);
 
 			while (true) {

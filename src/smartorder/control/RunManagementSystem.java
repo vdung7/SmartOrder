@@ -2,6 +2,7 @@ package smartorder.control;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import smartorder.presentation.ManagementFrame;
@@ -16,7 +17,12 @@ public class RunManagementSystem {
 				// connect Database
 				EntityManager em = Persistence.createEntityManagerFactory(
 						"SmartOrder").createEntityManager();
-				new ManagementFrame(em).setVisible(true);
+				try {
+					new ManagementFrame(em).setVisible(true);
+				} catch (Exception e) {
+					em.getTransaction().rollback();
+					JOptionPane.showMessageDialog(null, "Error!\n" + e.getMessage());
+				}
 			}
 		});
 

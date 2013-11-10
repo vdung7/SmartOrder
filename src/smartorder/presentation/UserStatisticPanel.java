@@ -46,7 +46,7 @@ public class UserStatisticPanel extends JPanel implements ActionListener {
 		arrangeComponents();
 	}
 	
-	private void updateCustomerModel() {
+	public void updateCustomerModel() {
 		if (customersModel==null) {
 			customersModel = new DefaultListModel<String>();
 		} else {
